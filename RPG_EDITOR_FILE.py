@@ -10,6 +10,8 @@ To Do List:
 7. Add some kind of a level up system or way to gain new abilities
 
 8. Find some way to make a screen appear in between defeating enemies
+
+Commit Testing??
 '''
 
 #setup window
