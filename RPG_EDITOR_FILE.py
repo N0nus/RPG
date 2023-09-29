@@ -322,7 +322,7 @@ class Enemy:
         self.model = model
         self.name = name
         self.img = image
-        self.max_health = 100 + self.strength*10
+        self.max_health = 0 + self.strength*10
         self.health = self.max_health
         self.max_mana = intellect * 2
         self.mana = self.max_mana
@@ -887,6 +887,7 @@ def reset_game():
     global enemy1
     global pure_death
     global enemy_healthbar
+    global background
     for player in players:
         player.health = player.max_health
         player.mana = player.max_mana
@@ -902,8 +903,7 @@ def reset_game():
     button_2.image_state = "menu"
     button_3.image_state = "menu"
     button_4.image_state = "menu"
-    enemy1 = pure_death
-    players.append(mage2)
+    background = PLACE_HOLDER_BACKGROUND
 
 reset_button_image = {"start_screen" : RESET_BUTTON}
 restart_button = Button(300,250, reset_button_image, EMPTY_BUTTON, "start_screen")
@@ -918,6 +918,11 @@ def main():
     global enemy_healthbar
     global targeting_spell
     global game_over
+    global background
+    level1 = ""
+    level2 = ""
+    level3 = ""
+    levels = [level1, level2, level3]
     game_over = False
     target = random.choice(players)
     screen_y_position = -1750
@@ -963,16 +968,17 @@ def main():
             priest_button.rect.x, priest_button.rect.y  = screen_x_position+850, screen_y_position+1350
             warrior_button.rect.x, warrior_button.rect.y  = screen_x_position+675, screen_y_position+1800
             if mage_button.draw():
+                level_number = 1
                 background = CAVE_IMAGE
-                current_player = 0
             elif warrior_button.draw():
-                enemy1 = pure_death 
-                enemy_healthbar = HealthBar(700, 150, enemy1.current_health , enemy1.max_health)
-                background = CAVE_IMAGE
-                current_player = 1
+                if level1 == "completed":
+                    enemy1 = pure_death 
+                    enemy_healthbar = HealthBar(700, 150, enemy1.current_health , enemy1.max_health)
+                    background = CAVE_IMAGE
+                else:
+                    print("moron")
             elif priest_button.draw():
                 background = CAVE_IMAGE
-                current_player = 2
             elif back_button_menu.draw():
                 main_menu = True
         else:
@@ -1085,6 +1091,7 @@ def main():
                 enemy1.current_health = enemy1.max_health
             elif enemy1.health < 1:
                 draw_text("YOU WIN B)", font2, GREEN, 325, 150)
+                levels[level_number-1] = "completed"
                 if restart_button.draw():
                     game_over = False
                     reset_game()
